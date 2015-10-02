@@ -5,6 +5,8 @@
 
 ## Example
 
+  [![view on requirebin](http://requirebin.com/badge.png)](http://requirebin.com/?gist=cb9980fb535c762b1cc1)
+
 ```js
 var Viewer = require('xml-viewer');
 var fs = require('fs');
@@ -24,10 +26,6 @@ view.on('select', function(node){
 insertCSS('.selected { background-color: #FFFF91 }');
 
 ```
-
-## Screenshot
-
-  __TODO__
 
 ## Installation
 

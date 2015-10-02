@@ -34,7 +34,23 @@ Viewer.prototype.getSelection = function(){
 };
 
 Viewer.prototype._renderRoot = function(node){
-  return h('span',
+  var self = this;
+
+  function onclick(ev){
+    ev.stopPropagation();
+    self._setSelection(node);
+  }
+
+  node.text = function(){
+    return renderTagOpen({
+          name: 'xml',
+          attributes: node.declaration.attributes
+        }, true) + '\n'
+      + node.root.text();
+  };
+
+  var el = h('span',
+    { onclick: onclick },
     renderTagOpen({
       name: 'xml',
       attributes: node.declaration.attributes
@@ -42,6 +58,8 @@ Viewer.prototype._renderRoot = function(node){
     h('br'),
     this._renderNode(node.root)
   );
+
+  return el;
 };
 
 Viewer.prototype._renderNode = function(node, indent){

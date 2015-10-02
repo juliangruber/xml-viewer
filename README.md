@@ -6,10 +6,17 @@
 ## Example
 
 ```js
-var xml-viewer = require('xml-viewer');
+var Viewer = require('xml-viewer');
+var fs = require('fs');
+var xml = fs.readFileSync(__dirname + '/data.xml');
 
-
+var view = new Viewer(xml);
+view.appendTo(document.body);
 ```
+
+## Screenshot
+
+  __TODO__
 
 ## Installation
 

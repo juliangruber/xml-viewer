@@ -1,0 +1,18 @@
+{
+  "name": "xml-viewer",
+  "version": "0.0.0",
+  "description": "Render and interact with XML in the browser",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": "juliangruber/xml-viewer",
+  "devDependencies": {
+    "beefy": "^2.1.5",
+    "brfs": "^1.4.1",
+    "tape": "*"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "xml-parser": "^1.2.1"
+  }
+}

@@ -3,7 +3,7 @@ var fs = require('fs');
 var xml = fs.readFileSync(__dirname + '/data.xml');
 var insertCSS = require('insert-css');
 
-insertCSS('.selected { background-color: #FFFF91 }');
+insertCSS('body { font-family: Arial; margin: 50px 100px } .selected { background-color: #FFFF91 }');
 
 var view = new Viewer(xml);
 view.appendTo(document.body);

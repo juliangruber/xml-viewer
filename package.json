@@ -1,6 +1,6 @@
 {
   "name": "xml-viewer",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Render and interact with XML in the browser",
   "scripts": {
     "test": "make test"

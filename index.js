@@ -7,11 +7,23 @@ module.exports = Viewer;
 function Viewer(xml){
   if (typeof xml != 'string') xml = xml.toString();
   var obj = parse(xml);
-  this._el = this._renderNode(obj.root);
+  console.log('obj', obj);
+  this._el = this._renderRoot(obj);
 }
 
 Viewer.prototype.appendTo = function(el){
   el.appendChild(this._el);
+};
+
+Viewer.prototype._renderRoot = function(node){
+  return h('span',
+    renderTagOpen({
+      name: 'xml',
+      attributes: node.declaration.attributes
+    }, true),
+    h('br'),
+    this._renderNode(node.root)
+  );
 };
 
 Viewer.prototype._renderNode = function(node){
@@ -35,11 +47,14 @@ Viewer.prototype._renderLeaf = function(node){
   return h('span', renderTagOpen(node) + node.content + renderTagClose(node));
 }
 
-function renderTagOpen(node){
-  var out = fmt('<%s', node.name);
+function renderTagOpen(node, declaration){
+  var out = '<';
+  if (declaration) out += '?';
+  out += node.name;
   Object.keys(node.attributes).forEach(function(key){
     out += fmt(' %s="%s"', key, node.attributes[key]);
   });
+  if (declaration) out += '?';
   out += '>';
   return out;
 }

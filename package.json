@@ -9,6 +9,7 @@
   "devDependencies": {
     "beefy": "^2.1.5",
     "brfs": "^1.4.1",
+    "insert-css": "^0.2.0",
     "tape": "*"
   },
   "license": "MIT",

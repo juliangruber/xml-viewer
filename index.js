@@ -25,6 +25,10 @@ Viewer.prototype.appendTo = function(el){
 
 Viewer.prototype._setSelection = function(node){
   if (this._selection === node) return;
+
+  if (this._selection) this._selection.el.classList.remove('selected');
+  if (node) node.el.classList.add('selected');
+
   this._selection = node;
   this.emit('select', this._selection);
 };
@@ -58,6 +62,7 @@ Viewer.prototype._renderRoot = function(node){
     h('br'),
     this._renderNode(node.root)
   );
+  node.el = el;
 
   return el;
 };
@@ -81,7 +86,7 @@ Viewer.prototype._renderNode = function(node, indent){
       + renderTagClose(node);
   };
 
-  return h('span',
+  var el = h('span',
     { onclick: onclick },
     tabs(indent),
     renderTagOpen(node),
@@ -96,6 +101,9 @@ Viewer.prototype._renderNode = function(node, indent){
     tabs(indent),
     renderTagClose(node)
   );
+  node.el = el;
+
+  return el;
 }
 
 Viewer.prototype._renderLeaf = function(node, indent){
@@ -111,11 +119,14 @@ Viewer.prototype._renderLeaf = function(node, indent){
     return text;
   };
 
-  return h('span',
+  var el = h('span',
     { onclick: onclick },
     tabs(indent),
     text
   );
+  node.el = el;
+
+  return el;
 }
 
 function renderTagOpen(node, declaration){

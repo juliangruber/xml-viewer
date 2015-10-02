@@ -13,6 +13,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "hyperscript": "^1.4.7",
     "xml-parser": "^1.2.1"
   }
 }

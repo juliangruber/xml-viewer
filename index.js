@@ -7,12 +7,16 @@ module.exports = Viewer;
 function Viewer(xml){
   if (typeof xml != 'string') xml = xml.toString();
   var obj = parse(xml);
-  console.log('obj', obj);
   this._el = this._renderRoot(obj);
+  this._selection = null;
 }
 
 Viewer.prototype.appendTo = function(el){
   el.appendChild(this._el);
+};
+
+Viewer.prototype.getSelection = function(){
+  return this._selection;
 };
 
 Viewer.prototype._renderRoot = function(node){
@@ -29,8 +33,16 @@ Viewer.prototype._renderRoot = function(node){
 Viewer.prototype._renderNode = function(node, indent){
   var self = this;
   indent = indent || 0;
+
   if (!node.children || !node.children.length) return this._renderLeaf(node, indent);
+
+  function onclick(ev){
+    ev.stopPropagation();
+    self._selection = node;
+  }
+
   return h('span',
+    { onclick: onclick },
     tabs(indent),
     renderTagOpen(node),
     node.children.map(function(child){
@@ -47,7 +59,15 @@ Viewer.prototype._renderNode = function(node, indent){
 }
 
 Viewer.prototype._renderLeaf = function(node, indent){
+  var self = this;
+
+  function onclick(ev){
+    ev.stopPropagation();
+    self._selection = node;
+  }
+
   return h('span',
+    { onclick: onclick },
     tabs(indent),
     renderTagOpen(node) + node.content + renderTagClose(node)
   );

@@ -1,10 +1,14 @@
 var parse = require('xml-parser');
 var fmt = require('util').format;
 var h = require('hyperscript');
+var inherits = require('util').inherits;
+var EventEmitter = require('events').EventEmitter;
 
 module.exports = Viewer;
+inherits(Viewer, EventEmitter);
 
 function Viewer(xml){
+  EventEmitter.call(this);
   if (typeof xml != 'string') xml = xml.toString();
   var obj = parse(xml);
   this._el = this._renderRoot(obj);
@@ -12,7 +16,17 @@ function Viewer(xml){
 }
 
 Viewer.prototype.appendTo = function(el){
+  var self = this;
   el.appendChild(this._el);
+  el.addEventListener('click', function(ev){
+    if (ev.target == el) self._setSelection(null);
+  });
+};
+
+Viewer.prototype._setSelection = function(node){
+  if (this._selection === node) return;
+  this._selection = node;
+  this.emit('select', this._selection);
 };
 
 Viewer.prototype.getSelection = function(){
@@ -38,8 +52,16 @@ Viewer.prototype._renderNode = function(node, indent){
 
   function onclick(ev){
     ev.stopPropagation();
-    self._selection = node;
+    self._setSelection(node);
   }
+
+  node.text = function(){
+    return renderTagOpen(node) + '\n'
+      + node.children.map(function(child){
+          return child.text().replace(/^/gm, '\t');
+        }).join('\n') + '\n'
+      + renderTagClose(node);
+  };
 
   return h('span',
     { onclick: onclick },
@@ -63,13 +85,18 @@ Viewer.prototype._renderLeaf = function(node, indent){
 
   function onclick(ev){
     ev.stopPropagation();
-    self._selection = node;
+    self._setSelection(node);
   }
+
+  var text = renderTagOpen(node) + node.content + renderTagClose(node);
+  node.text = function(){
+    return text;
+  };
 
   return h('span',
     { onclick: onclick },
     tabs(indent),
-    renderTagOpen(node) + node.content + renderTagClose(node)
+    text
   );
 }
 

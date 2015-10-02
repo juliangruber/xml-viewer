@@ -5,7 +5,7 @@
 
 ## Example
 
-  [![view on requirebin](http://requirebin.com/badge.png)](http://requirebin.com/?gist=cb9980fb535c762b1cc1)
+  [![view on requirebin](http://requirebin.com/badge.png)](http://requirebin.com/?gist=e5a12cd900f6c63824a7)
 
 ```js
 var Viewer = require('xml-viewer');

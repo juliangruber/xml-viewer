@@ -59,7 +59,6 @@ Viewer.prototype._renderRoot = function(node){
       name: 'xml',
       attributes: node.declaration.attributes
     }, true),
-    h('br'),
     this._renderNode(node.root)
   );
   node.el = el;
@@ -69,6 +68,7 @@ Viewer.prototype._renderRoot = function(node){
 
 Viewer.prototype._renderNode = function(node, indent){
   var self = this;
+  var folded = false;
   indent = indent || 0;
 
   if (!node.children || !node.children.length) return this._renderLeaf(node, indent);
@@ -76,6 +76,22 @@ Viewer.prototype._renderNode = function(node, indent){
   function onclick(ev){
     ev.stopPropagation();
     self._setSelection(node);
+  }
+
+  function ontoggle(ev){
+    ev.stopPropagation();
+    if (folded) {
+      ev.target.innerHTML = '-';
+      node.children.forEach(function(child){
+        child.el.style.display = 'inline';
+      });
+    } else {
+      ev.target.innerHTML = '+';
+      node.children.forEach(function(child){
+        child.el.style.display = 'none';
+      });
+    }
+    folded = !folded;
   }
 
   node.text = function(){
@@ -88,14 +104,13 @@ Viewer.prototype._renderNode = function(node, indent){
 
   var el = h('span',
     { onclick: onclick },
+    h('br'),
+    h('span', { onclick: ontoggle }, '-'),
+    h('span', ' '),
     tabs(indent),
     renderTagOpen(node),
     node.children.map(function(child){
-      var el = self._renderNode(child, indent + 1);
-      return h('span',
-        h('br'),
-        el
-      );
+      return self._renderNode(child, indent + 1);
     }),
     h('br'),
     tabs(indent),
@@ -121,6 +136,7 @@ Viewer.prototype._renderLeaf = function(node, indent){
 
   var el = h('span',
     { onclick: onclick },
+    h('br'),
     tabs(indent),
     text
   );

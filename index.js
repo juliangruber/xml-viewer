@@ -55,6 +55,7 @@ Viewer.prototype._renderRoot = function(node){
 
   var el = h('span',
     { onclick: onclick },
+    spaces(2),
     renderTagOpen({
       name: 'xml',
       attributes: node.declaration.attributes
@@ -105,15 +106,16 @@ Viewer.prototype._renderNode = function(node, indent){
   var el = h('span',
     { onclick: onclick },
     h('br'),
-    h('span', { onclick: ontoggle }, '-'),
-    h('span', ' '),
     tabs(indent),
+    h('span', { onclick: ontoggle }, '-'),
+    spaces(1),
     renderTagOpen(node),
     node.children.map(function(child){
       return self._renderNode(child, indent + 1);
     }),
     h('br'),
     tabs(indent),
+    spaces(2),
     renderTagClose(node)
   );
   node.el = el;
@@ -138,6 +140,7 @@ Viewer.prototype._renderLeaf = function(node, indent){
     { onclick: onclick },
     h('br'),
     tabs(indent),
+    spaces(2),
     text
   );
   node.el = el;
@@ -161,14 +164,16 @@ function renderTagClose(node){
   return fmt('</%s>', node.name);
 };
 
-function createTab(){
-  var tab = document.createElement('span');
-  tab.innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;'; // hackedy hack
-  return tab;
-}
-
 function tabs(n){
   var out = [];
-  for (var i = 0; i < n; i++) out.push(createTab());
+  for (var i = 0; i < n; i++) out.push(spaces(4));
   return out;
+}
+
+function spaces(n){
+  var el = document.createElement('span');
+  for (var i = 0; i < n; i++) {
+    el.innerHTML += '&nbsp';
+  }
+  return el;
 }

@@ -26,25 +26,31 @@ Viewer.prototype._renderRoot = function(node){
   );
 };
 
-Viewer.prototype._renderNode = function(node){
+Viewer.prototype._renderNode = function(node, indent){
   var self = this;
-  if (!node.children || !node.children.length) return this._renderLeaf(node);
+  indent = indent || 0;
+  if (!node.children || !node.children.length) return this._renderLeaf(node, indent);
   return h('span',
+    tabs(indent),
     renderTagOpen(node),
     node.children.map(function(child){
-      var el = self._renderNode(child);
+      var el = self._renderNode(child, indent + 1);
       return h('span',
         h('br'),
         el
       );
     }),
     h('br'),
+    tabs(indent),
     renderTagClose(node)
   );
 }
 
-Viewer.prototype._renderLeaf = function(node){
-  return h('span', renderTagOpen(node) + node.content + renderTagClose(node));
+Viewer.prototype._renderLeaf = function(node, indent){
+  return h('span',
+    tabs(indent),
+    renderTagOpen(node) + node.content + renderTagClose(node)
+  );
 }
 
 function renderTagOpen(node, declaration){
@@ -62,3 +68,15 @@ function renderTagOpen(node, declaration){
 function renderTagClose(node){
   return fmt('</%s>', node.name);
 };
+
+function createTab(){
+  var tab = document.createElement('span');
+  tab.innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;'; // hackedy hack
+  return tab;
+}
+
+function tabs(n){
+  var out = [];
+  for (var i = 0; i < n; i++) out.push(createTab());
+  return out;
+}

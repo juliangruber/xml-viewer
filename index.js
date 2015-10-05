@@ -48,10 +48,7 @@ Viewer.prototype._renderRoot = function(node){
   var el = h('span',
     { onclick: this._handleClick(node) },
     spaces(2),
-    render.declaration({
-      name: 'xml',
-      attributes: node.declaration.attributes
-    }),
+    render.declaration(node.declaration),
     this._renderNode(node.root)
   );
   node.el = el;

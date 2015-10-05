@@ -16,6 +16,6 @@
   "dependencies": {
     "hyperscript": "^1.4.7",
     "xml-parser": "^1.2.1",
-    "xml-render": "^1.3.0"
+    "xml-render": "^2.0.0"
   }
 }

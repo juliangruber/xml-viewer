@@ -51,7 +51,7 @@ Viewer.prototype._renderRoot = function(node){
           name: 'xml',
           attributes: node.declaration.attributes
         }) + '\n'
-      + node.root.text();
+      + render.node(node.root);
   };
 
   var el = h('span',
@@ -97,11 +97,7 @@ Viewer.prototype._renderNode = function(node, indent){
   }
 
   node.text = function(){
-    return render.tagOpen(node) + '\n'
-      + node.children.map(function(child){
-          return child.text().replace(/^/gm, '\t');
-        }).join('\n') + '\n'
-      + render.tagClose(node);
+    return render.node(node);
   };
 
   var el = h('span',
@@ -141,7 +137,7 @@ Viewer.prototype._renderLeaf = function(node, indent){
     h('br'),
     tabs(indent),
     spaces(2),
-    text
+    node.text()
   );
   node.el = el;
 

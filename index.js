@@ -41,11 +41,6 @@ Viewer.prototype.getSelection = function(){
 Viewer.prototype._renderRoot = function(node){
   var self = this;
 
-  function onclick(ev){
-    ev.stopPropagation();
-    self._setSelection(node);
-  }
-
   node.text = function(){
     return render.declaration({
           name: 'xml',
@@ -55,7 +50,7 @@ Viewer.prototype._renderRoot = function(node){
   };
 
   var el = h('span',
-    { onclick: onclick },
+    { onclick: this._handleClick(node) },
     spaces(2),
     render.tagOpen({
       name: 'xml',
@@ -74,11 +69,6 @@ Viewer.prototype._renderNode = function(node, indent){
   indent = indent || 0;
 
   if (!node.children || !node.children.length) return this._renderLeaf(node, indent);
-
-  function onclick(ev){
-    ev.stopPropagation();
-    self._setSelection(node);
-  }
 
   function ontoggle(ev){
     ev.stopPropagation();
@@ -101,7 +91,7 @@ Viewer.prototype._renderNode = function(node, indent){
   };
 
   var el = h('span',
-    { onclick: onclick },
+    { onclick: this._handleClick(node) },
     h('br'),
     tabs(indent),
     h('span', { onclick: ontoggle }, '-'),
@@ -123,17 +113,12 @@ Viewer.prototype._renderNode = function(node, indent){
 Viewer.prototype._renderLeaf = function(node, indent){
   var self = this;
 
-  function onclick(ev){
-    ev.stopPropagation();
-    self._setSelection(node);
-  }
-
   node.text = function(){
     return render.leaf(node);
   };
 
   var el = h('span',
-    { onclick: onclick },
+    { onclick: this._handleClick(node) },
     h('br'),
     tabs(indent),
     spaces(2),
@@ -143,6 +128,14 @@ Viewer.prototype._renderLeaf = function(node, indent){
 
   return el;
 }
+
+Viewer.prototype._handleClick = function(node){
+  var self = this;
+  return function(ev){
+    ev.stopPropagation();
+    self._setSelection(node);
+  };
+};
 
 function tabs(n){
   var out = [];

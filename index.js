@@ -49,7 +49,7 @@ Viewer.prototype._renderRoot = function(node){
     { onclick: this._handleClick(node) },
     spaces(2),
     render.declaration({
-      name: 'root',
+      name: 'xml',
       attributes: node.declaration.attributes
     }),
     this._renderNode(node.root)

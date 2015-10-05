@@ -1,4 +1,5 @@
 var parse = require('xml-parser');
+var render = require('xml-render');
 var fmt = require('util').format;
 var h = require('hyperscript');
 var inherits = require('util').inherits;
@@ -46,17 +47,17 @@ Viewer.prototype._renderRoot = function(node){
   }
 
   node.text = function(){
-    return renderTagOpen({
+    return render.declaration({
           name: 'xml',
           attributes: node.declaration.attributes
-        }, true) + '\n'
+        }) + '\n'
       + node.root.text();
   };
 
   var el = h('span',
     { onclick: onclick },
     spaces(2),
-    renderTagOpen({
+    render.tagOpen({
       name: 'xml',
       attributes: node.declaration.attributes
     }, true),
@@ -96,11 +97,11 @@ Viewer.prototype._renderNode = function(node, indent){
   }
 
   node.text = function(){
-    return renderTagOpen(node) + '\n'
+    return render.tagOpen(node) + '\n'
       + node.children.map(function(child){
           return child.text().replace(/^/gm, '\t');
         }).join('\n') + '\n'
-      + renderTagClose(node);
+      + render.tagClose(node);
   };
 
   var el = h('span',
@@ -109,14 +110,14 @@ Viewer.prototype._renderNode = function(node, indent){
     tabs(indent),
     h('span', { onclick: ontoggle }, '-'),
     spaces(1),
-    renderTagOpen(node),
+    render.tagOpen(node),
     node.children.map(function(child){
       return self._renderNode(child, indent + 1);
     }),
     h('br'),
     tabs(indent),
     spaces(2),
-    renderTagClose(node)
+    render.tagClose(node)
   );
   node.el = el;
 
@@ -131,7 +132,7 @@ Viewer.prototype._renderLeaf = function(node, indent){
     self._setSelection(node);
   }
 
-  var text = renderTagOpen(node) + node.content + renderTagClose(node);
+  var text = render.tagOpen(node) + node.content + render.tagClose(node);
   node.text = function(){
     return text;
   };
@@ -147,22 +148,6 @@ Viewer.prototype._renderLeaf = function(node, indent){
 
   return el;
 }
-
-function renderTagOpen(node, declaration){
-  var out = '<';
-  if (declaration) out += '?';
-  out += node.name;
-  Object.keys(node.attributes).forEach(function(key){
-    out += fmt(' %s="%s"', key, node.attributes[key]);
-  });
-  if (declaration) out += '?';
-  out += '>';
-  return out;
-}
-
-function renderTagClose(node){
-  return fmt('</%s>', node.name);
-};
 
 function tabs(n){
   var out = [];

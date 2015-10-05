@@ -42,11 +42,7 @@ Viewer.prototype._renderRoot = function(node){
   var self = this;
 
   node.text = function(){
-    return render.declaration({
-          name: 'xml',
-          attributes: node.declaration.attributes
-        }) + '\n'
-      + render.node(node.root);
+    return render.document(node);
   };
 
   var el = h('span',

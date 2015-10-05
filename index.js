@@ -42,7 +42,7 @@ Viewer.prototype._renderRoot = function(node){
   var self = this;
 
   node.text = function(){
-    return render.document(node);
+    return render.node(node);
   };
 
   var el = h('span',
@@ -110,7 +110,7 @@ Viewer.prototype._renderLeaf = function(node, indent){
   var self = this;
 
   node.text = function(){
-    return render.leaf(node);
+    return render.node(node);
   };
 
   var el = h('span',

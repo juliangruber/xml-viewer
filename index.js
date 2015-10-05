@@ -132,9 +132,8 @@ Viewer.prototype._renderLeaf = function(node, indent){
     self._setSelection(node);
   }
 
-  var text = render.tagOpen(node) + node.content + render.tagClose(node);
   node.text = function(){
-    return text;
+    return render.leaf(node);
   };
 
   var el = h('span',

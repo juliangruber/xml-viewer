@@ -9,12 +9,12 @@
   "devDependencies": {
     "beefy": "^2.1.5",
     "brfs": "^1.4.1",
-    "insert-css": "^0.2.0",
+    "insert-css": "^2.0.0",
     "tape": "*"
   },
   "license": "MIT",
   "dependencies": {
-    "hyperscript": "^1.4.7",
+    "hyperscript": "^2.0.2",
     "xml-parser": "^1.2.1",
     "xml-render": "^2.0.0"
   }

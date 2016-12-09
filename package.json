@@ -7,7 +7,7 @@
   },
   "repository": "juliangruber/xml-viewer",
   "devDependencies": {
-    "beefy": "^2.1.5",
+    "beefy": "^2.1.8",
     "brfs": "^1.4.1",
     "insert-css": "^2.0.0",
     "tape": "*"
